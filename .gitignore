@@ -1,0 +1,6 @@
+saved_audio/
+.env
+venv/
+__pycache__/
+en_US-lessac-medium.onnx
+.DS_Store
