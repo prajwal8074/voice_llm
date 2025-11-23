@@ -41,6 +41,22 @@ def process_interaction(audio: tuple[int, np.ndarray], old_history, new_history)
     output_audio = models.synthesize_audio(response_text)
     
     yield output_audio, AdditionalOutputs(history)
+
+def process_text_input(text, history):
+    history = history or []
+    
+    history.append(gr.ChatMessage(role="user", content=text))
+    yield history, None
+    
+    history.append(gr.ChatMessage(role="assistant", content="..."))
+    yield history, None
+    
+    response_text = models.get_response(text)
+    history[-1].content = response_text
+    
+    output_audio = models.synthesize_audio(response_text)
+    
+    yield history, output_audio
     
 def update_chat_ui(old_history, new_history):
     return new_history
@@ -49,7 +65,6 @@ with gr.Blocks() as demo:
     
     with gr.Group():
         chatbot = gr.Chatbot(
-            placeholder="<strong>Your Personal Yes-Man</strong><br>Speak, pause, and I will answer.",
             type="messages",
             render=False,
             elem_id="chatbot"
@@ -70,10 +85,44 @@ with gr.Blocks() as demo:
         
         stream.ui
         
+        audio_player = gr.Audio(visible=True, autoplay=True)
+        
         with gr.Row():
-            gr.Markdown(
-                "<h2 style='text-align: center; color: #4F8A10;'>💡 Try saying: 'What is the weather like today?' or 'Tell me a joke.'</h2>"
+            btn_weather = gr.Button("☀️ Check Weather")
+            btn_joke = gr.Button("😂 Tell a Joke")
+            btn_fact = gr.Button("🧠 Random Fact")
+    
+        def click_weather(history):
+            yield from process_text_input("What is the weather like today?", history)
+            
+        def click_joke(history):
+            yield from process_text_input("Tell me a joke.", history)
+            
+        def click_fact(history):
+            yield from process_text_input("Tell me a random fact.", history)
+        
+        btn_weather.click(click_weather, inputs=[chatbot], outputs=[chatbot, audio_player])
+        btn_joke.click(click_joke, inputs=[chatbot], outputs=[chatbot, audio_player])
+        btn_fact.click(click_fact, inputs=[chatbot], outputs=[chatbot, audio_player])
+        
+        with gr.Row():
+            txt_input = gr.Textbox(
+                show_label=False,
+                placeholder="Type your own message here...",
+                scale=4,
+                container=False
             )
+            btn_send = gr.Button("Send", variant="primary", scale=1)
+
+        def submit_custom(text, history):
+            yield from process_text_input(text, history)
+
+        txt_input.submit(submit_custom, [txt_input, chatbot], [chatbot, audio_player]).then(
+            lambda: "", None, [txt_input]
+        )
+        btn_send.click(submit_custom, [txt_input, chatbot], [chatbot, audio_player]).then(
+            lambda: "", None, [txt_input]
+        )
 
 if __name__ == "__main__":
     demo.launch()
