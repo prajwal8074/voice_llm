@@ -7,6 +7,7 @@ import uuid
 import os
 
 import models
+import functions
 
 os.makedirs("saved_audio", exist_ok=True)
 
@@ -35,7 +36,7 @@ def process_interaction(audio: tuple[int, np.ndarray], old_history, new_history)
     
     yield None, AdditionalOutputs(history)
     
-    response_text = models.get_response(user_msg.content)
+    response_text = functions.get_response(user_msg.content)
     
     history[-1].content = response_text
     output_audio = models.synthesize_audio(response_text)
@@ -51,7 +52,7 @@ def process_text_input(text, history):
     history.append(gr.ChatMessage(role="assistant", content="..."))
     yield history, None
     
-    response_text = models.get_response(text)
+    response_text = functions.get_response(text)
     history[-1].content = response_text
     
     output_audio = models.synthesize_audio(response_text)
@@ -88,18 +89,18 @@ with gr.Blocks() as demo:
         audio_player = gr.Audio(visible=True, autoplay=True)
         
         with gr.Row():
-            btn_weather = gr.Button("☀️ Check Weather")
-            btn_joke = gr.Button("😂 Tell a Joke")
-            btn_fact = gr.Button("🧠 Random Fact")
+            btn_weather = gr.Button("Create a support ticket")
+            btn_joke = gr.Button("Cancel a support ticket")
+            btn_fact = gr.Button("List open tickets")
     
         def click_weather(history):
-            yield from process_text_input("What is the weather like today?", history)
+            yield from process_text_input("Create a support ticket", history)
             
         def click_joke(history):
-            yield from process_text_input("Tell me a joke.", history)
+            yield from process_text_input("Cancel a support ticket", history)
             
         def click_fact(history):
-            yield from process_text_input("Tell me a random fact.", history)
+            yield from process_text_input("List open tickets", history)
         
         btn_weather.click(click_weather, inputs=[chatbot], outputs=[chatbot, audio_player])
         btn_joke.click(click_joke, inputs=[chatbot], outputs=[chatbot, audio_player])
@@ -125,4 +126,4 @@ with gr.Blocks() as demo:
         )
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(share=True)

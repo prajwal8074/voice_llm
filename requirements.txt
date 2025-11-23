@@ -2,11 +2,9 @@ gradio
 numpy
 scipy
 uuid
-os
 faster-whisper
 openai
 python-dotenv
 requests
 piper-tts
-pyaudio
 fastrtc
