@@ -14,7 +14,11 @@ A voice-enabled customer support bot for managing support tickets.
 - Local speech processing
 - SQLite database storage
 
-## Demo
+## Local Demo (Low Latency)
+
+https://github.com/user-attachments/assets/dbc458a8-ef99-4318-a818-45604041701a
+
+## Live Demo on Hugging Face Space
 
 https://github.com/user-attachments/assets/54b99e1a-2ab7-440f-9d73-f99cb35a6ec4
 
