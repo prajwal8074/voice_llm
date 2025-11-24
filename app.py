@@ -74,6 +74,11 @@ with gr.Blocks() as demo:
         stream = Stream(
             modality="audio",
             mode="send-receive",
+            rtc_configuration={
+                "iceServers": [
+                    {"urls": ["stun:stun.l.google.com:19302"]},
+                ]
+            },
             handler=ReplyOnPause(
                 process_interaction,
                 algo_options=AlgoOptions(speech_threshold=0.3),
