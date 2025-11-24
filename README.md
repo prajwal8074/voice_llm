@@ -1,3 +1,4 @@
+
 # Voice Support Bot
 
 A voice-enabled customer support bot for managing support tickets.
@@ -12,6 +13,10 @@ A voice-enabled customer support bot for managing support tickets.
 - List open/closed tickets
 - Local speech processing
 - SQLite database storage
+
+## Demo
+
+https://github.com/user-attachments/assets/54b99e1a-2ab7-440f-9d73-f99cb35a6ec4
 
 ## Tech Stack
 
