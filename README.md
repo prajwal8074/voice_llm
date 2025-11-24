@@ -1,6 +1,8 @@
 # Voice Support Bot
 
 A voice-enabled customer support bot for managing support tickets.
+<img width="1457" height="777" alt="Screenshot from 2025-11-24 22-24-44" src="https://github.com/user-attachments/assets/23f2c562-b241-4022-b8fb-279b74b94368" />
+
 
 ## Features
 
