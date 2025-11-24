@@ -22,6 +22,11 @@ A voice-enabled customer support bot for managing support tickets.
 - **Database**: SQLite
 - **Real-time Audio**: FastRTC
 
+## Requirements
+
+- Gemini API Key
+- Twillio Account
+
 ## Setup
 
 1. Install requirements:
@@ -30,11 +35,16 @@ pip install -r requirements.txt
 python3 -m piper.download_voices en_US-lessac-medium
 ```
 
-2. Add Gemini API key to `.env` file
+2. create .env file with contents:
+```
+GEMINI_API_KEY=
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+```
 
 3. Run the app:
 ```bash
-python app.py
+python3 app.py
 ```
 
 ## Usage
