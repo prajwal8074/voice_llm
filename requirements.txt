@@ -8,3 +8,4 @@ python-dotenv
 requests
 piper-tts
 fastrtc
+twilio

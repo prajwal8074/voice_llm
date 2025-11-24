@@ -1,5 +1,5 @@
 import gradio as gr
-from fastrtc import Stream, ReplyOnPause, AlgoOptions, SileroVadOptions, AdditionalOutputs
+from fastrtc import Stream, ReplyOnPause, AlgoOptions, SileroVadOptions, AdditionalOutputs, get_twilio_turn_credentials
 
 import numpy as np
 import scipy.io.wavfile as wavfile
@@ -74,11 +74,7 @@ with gr.Blocks() as demo:
         stream = Stream(
             modality="audio",
             mode="send-receive",
-            rtc_configuration={
-                "iceServers": [
-                    {"urls": ["stun:stun.l.google.com:19302"]},
-                ]
-            },
+            rtc_configuration=get_twilio_turn_credentials(),
             handler=ReplyOnPause(
                 process_interaction,
                 algo_options=AlgoOptions(speech_threshold=0.3),
@@ -131,4 +127,4 @@ with gr.Blocks() as demo:
         )
 
 if __name__ == "__main__":
-    demo.launch(server_name="127.0.0.1", server_port=7860, share=False)
+    demo.launch(share=True)
